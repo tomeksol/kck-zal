@@ -16,9 +16,18 @@ protocol.registerSchemesAsPrivileged([{scheme: 'app', privileges: { secure: true
 
 function createWindow () {
   // Create the browser window.
-  win = new BrowserWindow({ width: 800, height: 600, webPreferences: {
+  win = new BrowserWindow({
+      width: electron.screen.getPrimaryDisplay().size.width / 3,
+      height: electron.screen.getPrimaryDisplay().size.height,
+      frame: true,
+      icon: "/src/assets/logo.png",
+      webPreferences: {
     nodeIntegration: true
-  } })
+  } });
+  electron.BrowserWindow.icon = 'mario.png';
+
+  win.setPosition(0, 0, false);
+  
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
@@ -50,7 +59,11 @@ app.on('activate', () => {
   if (win === null) {
     createWindow()
   }
-})
+});
+let minimize = false;
+
+const { globalShortcut } = require("electron");
+
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
